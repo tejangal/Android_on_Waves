@@ -67,6 +67,18 @@ void loop()
         motorAll();                  //switch on both the motors
         
       }
+	  else if(command == 69)
+	  {
+	    motor_reverse();
+	  }
+	  else if(command == 70)
+	  {
+	    motorA_rev(); 
+	  }
+	  else if(command == 70)
+	  {
+	    motorB_rev(); 
+	  }
       else
       {
         analogWrite(pwmRightPin,0);            //set respective initial value
@@ -100,3 +112,28 @@ void motorAll()
  analogWrite(pwmRightPin,160);     //voltage 1.6V  
  digitalWrite(directionRightPin,0);  //direction = forward      
 }
+
+void motor_reverse()
+{
+ analogWrite(pwmLeftPin,160);      //voltage 1.6V
+ digitalWrite(directionLeftPin,1);  //direction= forward
+ analogWrite(pwmRightPin,160);     //voltage 1.6V  
+ digitalWrite(directionRightPin,1);  //direction = forward      
+}
+
+void motorA_rev()
+{ 
+  analogWrite(pwmLeftPin,160);      //voltage 1.6V
+  analogWrite(pwmRightPin,0);
+  digitalWrite(directionLeftPin,1);  //direction= forward
+  digitalWrite(directionRightPin,0);
+}
+
+void motorB_rev()
+{
+ analogWrite(pwmRightPin,160);     //voltage 1.6V  
+ analogWrite(pwmLeftPin,0);
+ digitalWrite(directionRightPin,1);  //direction = forward      
+ digitalWrite(directionLeftPin,0);
+}
+
