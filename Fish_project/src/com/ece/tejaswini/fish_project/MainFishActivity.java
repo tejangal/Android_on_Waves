@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 
 
 public class MainFishActivity extends Activity {
@@ -31,6 +33,7 @@ public class MainFishActivity extends Activity {
     String Right = "B"; 
     String Stop = "C";
     String Fwd = "D";
+    String Rev = "E";
     final String DEVICE_NAME = "RN42-3C1C"; //Name of the Bluesmirf device
  // well known SPP UUID
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -45,26 +48,51 @@ public class MainFishActivity extends Activity {
 		    // Device does not support Bluetooth
 			Toast.makeText(getApplicationContext(), "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
 		}
-		mDevice = findBondedDeviceByName(mBluetoothAdapter,DEVICE_NAME );//Find the specified bonded device
-		if (mDevice == null) {
-		    // Device does not support Bluetooth
-			Toast.makeText(getApplicationContext(), "Device not in range", Toast.LENGTH_SHORT).show();
-		}
-		try {
-			tmp = mDevice.createRfcommSocketToServiceRecord(MY_UUID); //create socket connection
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (tmp == null) {
-		    // Device does not support Bluetooth
-			Toast.makeText(getApplicationContext(), "Device not in range", Toast.LENGTH_SHORT).show();
-		}
+		if(!mBluetoothAdapter.isEnabled()){
+            //adpt.enable();
+            //Intent i=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            //startActivity(i);
+            //startActivityForResult(i, 0);
+			//mBluetoothAdapter.enable();
+			Toast.makeText(this, "Please switch the bluetooth ON then restart the application", Toast.LENGTH_LONG).show();
+			finish();
+        }
 		else
 		{
-			mSocket= tmp;
-		}
-	}
+			mDevice = findBondedDeviceByName(mBluetoothAdapter,DEVICE_NAME );//Find the specified bonded device
+    		if (mDevice == null  ) {
+    		    // Device does not support Bluetooth
+    			Toast.makeText(getApplicationContext(), "Device not in range", Toast.LENGTH_LONG).show();
+    			finish();
+    		}
+    		else
+    		{
+    			try {
+    			tmp = mDevice.createRfcommSocketToServiceRecord(MY_UUID); //create socket connection
+    			} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    			}
+    			if (tmp == null) {
+    		    // Device does not support Bluetooth
+    			Toast.makeText(getApplicationContext(), "Device not in range", Toast.LENGTH_LONG).show();
+    			finish();
+    			}
+    			else
+    			{
+    				mSocket= tmp;
+    			}
+    			return;	
+    		}
+		}	
+		
+	 }
+	
+		
+	
+	
+	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,7 +106,9 @@ public class MainFishActivity extends Activity {
 		 super.onStart();
 		try {
 			mSocket.connect();
+			Toast.makeText(this, "Now connected", Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
+			Toast.makeText(this, "Not connected try again", Toast.LENGTH_LONG).show();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -133,9 +163,21 @@ public class MainFishActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendMessageReverse(View view) {
+	    // Do something in response to button click
+		 byte[] toSendRev = Rev.getBytes();
+		try {
+			mmOutStream = mSocket.getOutputStream();
+			mmOutStream.write(toSendRev);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private static BluetoothDevice findBondedDeviceByName (BluetoothAdapter adapter, String name) {
 		for (BluetoothDevice device : getBondedDevices(adapter)) {
-		if (name.matches(device.getName())) {
+		if (name.matches(device.getName())   ) {
 		Log.v(TAG, String.format("Found device with name %s and address %s.", device.getName(), device.getAddress()));
 		return device;
 		}
@@ -151,6 +193,7 @@ public class MainFishActivity extends Activity {
 		}
 		return results;
 		}
+	
 	
 	
 }
