@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/boat7"
+    tools:context=".MainFishActivity" >
+
+    <Button
+        android:id="@+id/fwdbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/stopbutton"
+        android:layout_centerVertical="true"
+        android:background="#fa0"
+        android:onClick="sendMessageFwd"
+        android:text="@string/Forward" />
+
+    <Button
+        android:id="@+id/leftbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fwdbutton"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/fwdbutton"
+        android:background="#fa0"
+        android:onClick="sendMessageLeft"
+        android:text="@string/Left" />
+
+    <Button
+        android:id="@+id/stopbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rightbutton"
+        android:layout_centerHorizontal="true"
+        android:background="#fa0"
+        android:onClick="sendMessageStop"
+        android:text="@string/Stop" />
+
+    <Button
+        android:id="@+id/rightbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/leftbutton"
+        android:layout_alignBottom="@+id/leftbutton"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:background="#fa0"
+        android:onClick="sendMessageRight"
+        android:text="@string/Right" />
+
+    <Button
+        android:id="@+id/reversebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:background="#fa0"
+        android:onClick="sendMessageReverse"
+        android:text="@string/Reverse" />
+
+</RelativeLayout>
