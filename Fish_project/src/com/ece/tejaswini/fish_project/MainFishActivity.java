@@ -28,37 +28,36 @@ public class MainFishActivity extends Activity {
      BluetoothDevice mDevice;
     BluetoothSocket mSocket;
     BluetoothSocket tmp = null;
-    OutputStream mmOutStream;
-    String Left = "A"; 
-    String Right = "B"; 
-    String Stop = "C";
-    String Fwd = "D";
-    String Rev = "E";
-    final String DEVICE_NAME = "RN42-3C1C"; //Name of the Bluesmirf device
- // well known SPP UUID
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final String TAG = "BluetoothActivity";
-	@Override
+    OutputStream mmOutStream;                                       //for bluetooth connection
+    String Left = "A";                                              //character sent to arduino for turning the board left
+    String Right = "B";                                             //character sent to arduino for turning the boat right 
+    String Stop = "C";                                              //character sent to arduino for stopping the boat   
+    String Fwd = "D";                                               //character sent to arduino for forward  
+    String Rev = "E";                                               //character sent to arduino for reverse
+    final String DEVICE_NAME = "RN42-3C1C"; 						//Name of the Bluesmirf device 
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //well known UUID 
+    private static final String TAG = "BluetoothActivity";                                       //used for log messages
+	
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_fish);
-		
+		setContentView(R.layout.activity_main_fish);		
         //Check if device supports bluetooth 
 		if (mBluetoothAdapter == null) {
 		    // Device does not support Bluetooth
 			Toast.makeText(getApplicationContext(), "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
+			finish();
 		}
+		
+		//Check if bluetooth is switched ON (for phone)
 		if(!mBluetoothAdapter.isEnabled()){
-            //adpt.enable();
-            //Intent i=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            //startActivity(i);
-            //startActivityForResult(i, 0);
-			//mBluetoothAdapter.enable();
+			//bluetooth not switched ON
 			Toast.makeText(this, "Please switch the bluetooth ON then restart the application", Toast.LENGTH_LONG).show();
 			finish();
         }
 		else
 		{
+			//find the bonded device in bonded device list 
 			mDevice = findBondedDeviceByName(mBluetoothAdapter,DEVICE_NAME );//Find the specified bonded device
     		if (mDevice == null  ) {
     		    // Device does not support Bluetooth
@@ -67,11 +66,13 @@ public class MainFishActivity extends Activity {
     		}
     		else
     		{
-    			try {
-    			tmp = mDevice.createRfcommSocketToServiceRecord(MY_UUID); //create socket connection
+    			try 
+    			{    				
+    				//create socket
+    				tmp = mDevice.createRfcommSocketToServiceRecord(MY_UUID); //create socket connection
     			} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
     			}
     			if (tmp == null) {
     		    // Device does not support Bluetooth
@@ -80,7 +81,7 @@ public class MainFishActivity extends Activity {
     			}
     			else
     			{
-    				mSocket= tmp;
+    				mSocket= tmp; //assign temporary socket to main socket
     			}
     			return;	
     		}
@@ -108,6 +109,7 @@ public class MainFishActivity extends Activity {
 			mSocket.connect();
 			Toast.makeText(this, "Now connected", Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
+			//if the bonded device is switched off not not able to connect
 			Toast.makeText(this, "Not connected try again", Toast.LENGTH_LONG).show();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,7 +117,8 @@ public class MainFishActivity extends Activity {
 	}
 	
 	public void sendMessageLeft(View view) {
-	    // Do something in response to button click
+	    //Send the character 'A' to arduino
+		//it indicates turning left
 		 byte[] toSendLeft = Left.getBytes();        //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();  
@@ -127,11 +130,12 @@ public class MainFishActivity extends Activity {
 	}
 	
 	public void sendMessageRight(View view) {
-	    // Do something in response to button click
-		 byte[] toSendRight = Right.getBytes();
+		//Send the character 'B' to arduino
+		//it indicates turning right
+		 byte[] toSendRight = Right.getBytes();      //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();
-			mmOutStream.write(toSendRight);
+			mmOutStream.write(toSendRight);          //Write the character to be sent to the output stream
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,11 +143,12 @@ public class MainFishActivity extends Activity {
 	}
 	
 	public void sendMessageStop(View view) {
-	    // Do something in response to button click
-		 byte[] toSendStop = Stop.getBytes();
+		//Send the character 'C' to arduino
+		//it indicates stop
+		 byte[] toSendStop = Stop.getBytes();       //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();
-			mmOutStream.write(toSendStop);
+			mmOutStream.write(toSendStop);            //Write the character to be sent to the output stream
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,11 +158,12 @@ public class MainFishActivity extends Activity {
 	
 	
 	public void sendMessageFwd(View view) {
-	    // Do something in response to button click
-		 byte[] toSendFwd = Fwd.getBytes();
+		//Send the character 'D' to arduino
+		//it indicates going forward
+		 byte[] toSendFwd = Fwd.getBytes();                //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();
-			mmOutStream.write(toSendFwd);
+			mmOutStream.write(toSendFwd);                  //Write the character to be sent to the output stream
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -165,10 +171,11 @@ public class MainFishActivity extends Activity {
 	}
 	
 	public void sendMessageReverse(View view) {
-	    // Do something in response to button click
-		 byte[] toSendRev = Rev.getBytes();
+		//Send the character 'E' to arduino
+		//it indicates going reverse
+		 byte[] toSendRev = Rev.getBytes();            //character to be sent
 		try {
-			mmOutStream = mSocket.getOutputStream();
+			mmOutStream = mSocket.getOutputStream();   //Write the character to be sent to the output stream
 			mmOutStream.write(toSendRev);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -177,17 +184,17 @@ public class MainFishActivity extends Activity {
 	}
 	private static BluetoothDevice findBondedDeviceByName (BluetoothAdapter adapter, String name) {
 		for (BluetoothDevice device : getBondedDevices(adapter)) {
-		if (name.matches(device.getName())   ) {
+		if (name.matches(device.getName())   ) {  //if device is bonded and found
 		Log.v(TAG, String.format("Found device with name %s and address %s.", device.getName(), device.getAddress()));
 		return device;
 		}
 		}
-		Log.w(TAG, String.format("Unable to find device with name %s.", name));
+		Log.w(TAG, String.format("Unable to find device with name %s.", name)); //device not bonded or not found
 		return null;
 		}
 	
 	private static Set<BluetoothDevice> getBondedDevices (BluetoothAdapter adapter) {
-		Set<BluetoothDevice> results = adapter.getBondedDevices();
+		Set<BluetoothDevice> results = adapter.getBondedDevices(); //gets a list of bonded devices
 		if (results == null) {
 		results = new HashSet<BluetoothDevice>();
 		}
