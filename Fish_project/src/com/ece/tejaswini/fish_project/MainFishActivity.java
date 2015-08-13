@@ -1,3 +1,11 @@
+//Copyright (c) 2015 Tejaswini Angal 
+ /* This program is released under the "GNU General Public License(GPL)". 
+    Please see the file COPYING in this distribution for 
+   license terms. */ 
+
+//This program issues pre decided character over bluetooth to the Bluesmirf (bluetooth module) on the click of the respective buttons.
+//The buttons used are forward, reverse , left and right
+
 package com.ece.tejaswini.fish_project;
 
 import java.io.IOException;
