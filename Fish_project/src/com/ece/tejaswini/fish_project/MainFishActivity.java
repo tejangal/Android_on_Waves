@@ -127,7 +127,7 @@ public class MainFishActivity extends Activity {
 	public void sendMessageLeft(View view) {
 	    //Send the character 'A' to arduino
 		//it indicates turning left
-		 byte[] toSendLeft = Left.getBytes();        //character to be sent
+		 byte[] toSendLeft = Right.getBytes();        //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();  
 			mmOutStream.write(toSendLeft);           //Write the character to be sent to the output stream
@@ -140,7 +140,7 @@ public class MainFishActivity extends Activity {
 	public void sendMessageRight(View view) {
 		//Send the character 'B' to arduino
 		//it indicates turning right
-		 byte[] toSendRight = Right.getBytes();      //character to be sent
+		 byte[] toSendRight = Left.getBytes();      //character to be sent
 		try {
 			mmOutStream = mSocket.getOutputStream();
 			mmOutStream.write(toSendRight);          //Write the character to be sent to the output stream
