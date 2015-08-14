@@ -20,6 +20,11 @@ When the user clicks on the button right the character "A" is sent over bluetoot
 When the user clicks on the button left the character "B" is sent over bluetooth to the bluetooth module.
 When the user clicks on the button stop the character "C" is sent over bluetooth to the bluetooth module.
 
+Future Enhancement:
+1. Using android accelerometer.
+2. Communication over wifi
+3.Using a camera mounted on boat
+
 For more info refer the schematic,block diagram, user guide,build guide and source code.
 References:
 https://www.arduino.cc/en/Main/arduinoBoardUno 
