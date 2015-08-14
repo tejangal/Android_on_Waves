@@ -4,10 +4,11 @@
    Please see the file COPYING in this distribution for
    license terms. */
 
-//This program controls the motion of the boat in three directions
+//This program controls the motion of the boat in four directions
 //1.Forward
 //2.Left
 //3.Right
+//4.Reverse
 #include <MeetAndroid.h>
 //Pin setup
 int led = 13;                    //lights the led on arduino, used for testing purpose
@@ -47,38 +48,31 @@ void loop()
   command = rcvData; 
   }
    
-       if(command == 65 )
+       if(command == 65 )//A
       {
        motorA();  //switch on motor1
       }
-      else if(command == 66)
+      else if(command == 66)//B
       {
          motorB();   //switch on motor2
       }  
-      else if(command == 67)
+      else if(command == 67) //C
       {  //switch off both motors    
         analogWrite(pwmRightPin,0);
         analogWrite(pwmLeftPin,0);
         digitalWrite(directionRightPin,0);        
         digitalWrite(directionLeftPin,0);
       }
-      else if(command == 68)
+      else if(command == 68) //D
       {
         motorAll();                  //switch on both the motors
         
       }
-	  else if(command == 69)
-	  {
-	    motor_reverse();
-	  }
-	  else if(command == 70)
-	  {
-	    motorA_rev(); 
-	  }
-	  else if(command == 70)
-	  {
-	    motorB_rev(); 
-	  }
+      else if(command == 69)//E
+      {
+	 motor_reverse();
+      }
+	  
       else
       {
         analogWrite(pwmRightPin,0);            //set respective initial value
@@ -121,19 +115,6 @@ void motor_reverse()
  digitalWrite(directionRightPin,1);  //direction = forward      
 }
 
-void motorA_rev()
-{ 
-  analogWrite(pwmLeftPin,160);      //voltage 1.6V
-  analogWrite(pwmRightPin,0);
-  digitalWrite(directionLeftPin,1);  //direction= forward
-  digitalWrite(directionRightPin,0);
-}
 
-void motorB_rev()
-{
- analogWrite(pwmRightPin,160);     //voltage 1.6V  
- analogWrite(pwmLeftPin,0);
- digitalWrite(directionRightPin,1);  //direction = forward      
- digitalWrite(directionLeftPin,0);
-}
+
 
