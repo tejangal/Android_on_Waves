@@ -28,6 +28,7 @@ Future Enhancement:
 3.Using a camera mounted on boat
 
 For more info refer the schematic,block diagram, user guide,build guide and source code.
+Source code and apk can be found here https://github.com/tejangal/Android_on_Waves/releases 
 References:
 https://www.arduino.cc/en/Main/arduinoBoardUno 
 http://developer.android.com/guide/topics/connectivity/bluetooth.html
